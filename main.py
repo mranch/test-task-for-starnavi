@@ -3,8 +3,8 @@ import pytest
 necessary_result = [11, 55, 15, 21, 44, 32, 13, 25, 43]
 
 
-def read_matrix():
-    with open('input.txt') as input_matrix:
+def read_matrix(file_name='input.txt'):
+    with open(file_name) as input_matrix:
         return [[x for x in r.split()] for r in input_matrix]
 
 
@@ -52,11 +52,19 @@ class TestTask:
 
 @pytest.mark.parametrize("expected", [necessary_result])
 def test_set_route_oop(expected):
-    vvv = TestTask()
+    vvv = TestTask(matrix=read_matrix('test_input.txt'))
     assert expected == vvv.set_route
 
 
 @pytest.mark.parametrize("expected", [necessary_result])
 def test_set_route_fp(expected):
-    func = set_route_recurrence()
+    func = set_route_recurrence(matrix=read_matrix('test_input.txt'))
     assert expected == func()
+
+
+if __name__ == '__main__':
+    with open('output_oop.txt', 'w') as oop_result:
+        testTask = TestTask()
+        oop_result.write(" ".join(str(x) for x in testTask.set_route))
+    with open('output_recurrence.txt', 'w') as recurrence_result:
+        recurrence_result.write(" ".join(str(x) for x in set_route_recurrence()()))
